@@ -59,16 +59,14 @@ class TRLConfig(BaseModel):
         default=0.3,
         json_schema_extra={
             "description": "Control the GPU memory utilization for vLLM. This setting only applies when `vllm_mode` is set "
-            "to `'colocate'`. If you are using `vllm_mode='server'`, this parameter must be passed separately when "
-            "launching the vLLM server via the `--vllm_gpu_memory_utilization` flag."
+            "to `'colocate'`."
         },
     )
     vllm_tensor_parallel_size: int = Field(
         default=1,
         json_schema_extra={
             "description": "Control the tensor parallel size for vLLM. This setting only applies when `vllm_mode` is set "
-            "to `'colocate'`. If you are using `vllm_mode='server'`, this parameter must be passed separately when "
-            "launching the vLLM server via the `--vllm_tensor_parallel_size` flag."
+            "to `'colocate'`."
         },
     )
 
