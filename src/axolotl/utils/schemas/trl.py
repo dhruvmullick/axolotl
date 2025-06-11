@@ -27,6 +27,16 @@ class TRLConfig(BaseModel):
         default=False,
         json_schema_extra={"description": "Whether to use VLLM for RL training."},
     )
+    vllm_mode: str | None = Field(
+        default="server",
+        json_schema_extra={
+            "help": "Mode to use for vLLM integration when `use_vllm` is set to `True`. Must be one of `server` or "
+            "`'colocate'`. `'server'`: The trainer will send generation requests to a separate vLLM server. Make sure a "
+            "TRL vLLM server is running (start with `trl vllm-serve`). `'colocate'`: vLLM will run in the same "
+            "process and share the training GPUs. This avoids the need for a separate server but may cause resource "
+            "contention with training."
+        },
+    )
     vllm_server_host: str | None = Field(
         default="0.0.0.0",  # nosec B104
         json_schema_extra={"description": "Host of the vLLM server to connect to."},
@@ -44,6 +54,22 @@ class TRLConfig(BaseModel):
     vllm_guided_decoding_regex: str | None = Field(
         default=None,
         json_schema_extra={"description": "Regex for vLLM guided decoding."},
+    )
+    vllm_gpu_memory_utilization: float = Field(
+        default=0.3,
+        json_schema_extra={
+            "description": "Control the GPU memory utilization for vLLM. This setting only applies when `vllm_mode` is set "
+            "to `'colocate'`. If you are using `vllm_mode='server'`, this parameter must be passed separately when "
+            "launching the vLLM server via the `--vllm_gpu_memory_utilization` flag."
+        },
+    )
+    vllm_tensor_parallel_size: int = Field(
+        default=1,
+        json_schema_extra={
+            "description": "Control the tensor parallel size for vLLM. This setting only applies when `vllm_mode` is set "
+            "to `'colocate'`. If you are using `vllm_mode='server'`, this parameter must be passed separately when "
+            "launching the vLLM server via the `--vllm_tensor_parallel_size` flag."
+        },
     )
 
     reward_funcs: list[str] | None = Field(
